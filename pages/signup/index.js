@@ -5,18 +5,15 @@ import {Grid, Row} from 'react-native-easy-grid';
 import {FontAwesome} from '@expo/vector-icons';
 import {StyleSheet, TouchableOpacity, TextInput} from 'react-native';
 import {brandColor} from "../../const/theme";
-import {login, login_password_changed, login_username_chaged} from "../../actions/auth";
+import {signup, signup_password_changed, signup_username_chaged} from "../../actions/auth";
 
-class LoginPage extends Component {
+class SignupPage extends Component {
   render() {
-    console.log(this.props.logged_in);
-    if (this.props.logged_in) this.props.navigation.navigate('Quiz');
-
     return (
       <Container style={styles.container}>
         <Grid>
           <Row size={30} style={styles.titleContainer}>
-            <Text style={styles.title}>LOGIN</Text>
+            <Text style={styles.title}>SIGNUP</Text>
           </Row>
           <Row size={30} style={styles.formRow}>
             <Form style={styles.formContainer}>
@@ -31,7 +28,7 @@ class LoginPage extends Component {
             </Form>
           </Row>
           <Row size={30} style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={this.props.login}>
+            <TouchableOpacity style={styles.button} onPress={this.props.signup}>
               <FontAwesome style={styles.buttonIcon} name='arrow-right' size={48} color='#fff'/>
             </TouchableOpacity>
           </Row>
@@ -99,13 +96,12 @@ const styles = StyleSheet.create({
   }
 });
 const mapStateToProps = state => ({
-  username: state.auth.login_username,
-  password: state.auth.login_password,
-  logged_in: state.auth.logged_in
+  username: state.auth.signup_username,
+  password: state.auth.signup_password
 });
 const mapDispatchToProps = dispatch => ({
-  username_changed: username => dispatch(login_username_chaged(username)),
-  password_changed: password => dispatch(login_password_changed(password)),
-  login: () => dispatch(login())
+  username_changed: username => dispatch(signup_username_chaged(username)),
+  password_changed: password => dispatch(signup_password_changed(password)),
+  signup: () => dispatch(signup())
 });
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default connect(mapStateToProps, mapDispatchToProps)(SignupPage);
