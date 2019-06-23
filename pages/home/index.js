@@ -52,4 +52,5 @@ class HomePage extends Component {
 
 const mapStateToProps = state => ({
     first_name: state.auth.first_name
-})
+});
+export default connect(mapStateToProps)(HomePage);

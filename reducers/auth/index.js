@@ -20,6 +20,7 @@ const reducer = (state=INITIAL_STATE, action) => {
     case types.SIGNUP_PASSWORD_CHANGED:
       return {...state, signup_password: action.payload};
     case types.LOGGED_IN:
+      console.log('LOGEDIN');
       return {...state, logged_in: true, token: action.payload};
     default:
       return state;

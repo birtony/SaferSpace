@@ -3,6 +3,7 @@ import SplashPage from './pages/splash';
 import LoginPage from './pages/login';
 import SignUpPage from './pages/signup';
 import QuizPage from './pages/quiz';
+import HomePage from './pages/home';
 
 const navigator = createStackNavigator({
   Init: {
@@ -24,6 +25,13 @@ const navigator = createStackNavigator({
       headerMode: 'none',
       navigationOptions: {
         headerVisible: false,
+      }
+    })
+  },
+  Main: {
+    screen: createStackNavigator({
+      Home: {
+        screen: HomePage
       }
     })
   }

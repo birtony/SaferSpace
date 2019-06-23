@@ -1,8 +1,8 @@
-import axios from 'axios';
 import * as types from './types';
+import {Alert} from 'react-native';
 import {HOST, PORT} from "../const/config";
 
-export const login_username_chaged = username => ({
+export const login_username_changed = username => ({
   type: types.LOGIN_USERNAME_CHANGED,
   payload: username
 });
@@ -30,15 +30,28 @@ export const login = () => async (dispatch, getState) => {
     password: login_password
   };
   console.log(`Sending to ${url}`);
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body)
-  });
-  console.log(response.json());
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+    console.log('Dispatching event...');
+    const data = await response.json();
+    console.log(data);
+    const token = data.token;
+
+    dispatch({
+      type: types.LOGGED_IN,
+      payload: token
+    });
+  } catch (e){
+    console.log(e);
+    Alert.alert('Error', 'Bad username/password. Please double check and try again');
+  }
 };
 
 export const signup = () => async (dispatch, getState) => {
@@ -49,8 +62,9 @@ export const signup = () => async (dispatch, getState) => {
     password: signup_password,
     passwordConfirm: signup_password
   };
+  let response;
   try {
-    const response = await fetch(url, {
+    response = await fetch(url, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -58,13 +72,11 @@ export const signup = () => async (dispatch, getState) => {
       },
       body: JSON.stringify(data)
     });
-    const token = response.json()['_55'].token;
-    dispatch({
-      type: types.LOGGED_IN,
-      payload: token
-    })
-  } catch {
-    Alert.alert('Error', "Error logging in. Please check your credentials and try again");
   }
+  catch {
+    Alert.alert('Error', "Error logging in. Please check your credentials and try again");
+    return null;
+  }
+
   console.log(response.json());
 };

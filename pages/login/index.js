@@ -5,7 +5,7 @@ import {Grid, Row} from 'react-native-easy-grid';
 import {FontAwesome} from '@expo/vector-icons';
 import {StyleSheet, TouchableOpacity, TextInput} from 'react-native';
 import {brandColor} from "../../const/theme";
-import {login, login_password_changed, login_username_chaged} from "../../actions/auth";
+import {login, login_password_changed, login_username_changed} from "../../actions/auth";
 
 class LoginPage extends Component {
   render() {
@@ -33,6 +33,9 @@ class LoginPage extends Component {
           <Row size={30} style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={this.props.login}>
               <FontAwesome style={styles.buttonIcon} name='arrow-right' size={48} color='#fff'/>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Main')}>
+              <FontAwesome style={styles.buttonIcon} name='arrow-left' size={48} color='#fff'/>
             </TouchableOpacity>
           </Row>
           <Row size={10} style={styles.subtitleContainer}>
@@ -104,7 +107,7 @@ const mapStateToProps = state => ({
   logged_in: state.auth.logged_in
 });
 const mapDispatchToProps = dispatch => ({
-  username_changed: username => dispatch(login_username_chaged(username)),
+  username_changed: username => dispatch(login_username_changed(username)),
   password_changed: password => dispatch(login_password_changed(password)),
   login: () => dispatch(login())
 });
