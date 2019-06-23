@@ -34,9 +34,6 @@ class LoginPage extends Component {
             <TouchableOpacity style={styles.button} onPress={this.props.login}>
               <FontAwesome style={styles.buttonIcon} name='arrow-right' size={48} color='#fff'/>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Main')}>
-              <FontAwesome style={styles.buttonIcon} name='arrow-left' size={48} color='#fff'/>
-            </TouchableOpacity>
           </Row>
           <Row size={10} style={styles.subtitleContainer}>
             <Text style={styles.subtitle}>Safer Space</Text>

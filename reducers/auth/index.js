@@ -43,6 +43,8 @@ const reducer = (state=INITIAL_STATE, action) => {
       return {...state, drugs: {...state.drugs, [action.payload.drug]: !state.drugs[action.payload.drug]}};
     case types.LAST_USAGE_CHANGED:
       return {...state, last_use: action.payload};
+    case types.USER_COMPLETED:
+      return {...state, complete: true};
     default:
       return state;
   }

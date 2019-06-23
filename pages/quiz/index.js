@@ -138,6 +138,9 @@ class QuizPage extends Component {
 
   render() {
     console.log(this.props);
+
+    if (this.props.complete) this.props.navigation.navigate('Main');
+
     return (
       <Container style={styles.container}>
         <Grid style={styles.container}>
@@ -245,7 +248,8 @@ const mapStateToProps = (state) => ({
   gender: state.auth.gender,
   location: state.auth.location,
   drugs: state.auth.drugs,
-  last_use: state.auth.last_use
+  last_use: state.auth.last_use,
+  complete: state.auth.complete
 });
 const mapDispatchToProps = (dispatch) => ({
   name_changed: name => dispatch(name_changed(name)),

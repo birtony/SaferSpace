@@ -13,3 +13,4 @@ export const GENDER_CHANGED = 'gender_changed';
 export const LOCATION_CHANGED = 'location_changed';
 export const DRUG_CHANGED = 'drug_changed';
 export const LAST_USAGE_CHANGED = 'last_usage';
+export const USER_COMPLETED = 'user_completed';

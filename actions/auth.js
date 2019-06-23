@@ -42,12 +42,20 @@ export const login = () => async (dispatch, getState) => {
     console.log('Dispatching event...');
     const data = await response.json();
     console.log(data);
-    const token = data.token;
-
-    dispatch({
-      type: types.LOGGED_IN,
-      payload: token
-    });
+    const {token, complete} = data;
+    if (token) {
+      dispatch({
+        type: types.LOGGED_IN,
+        payload: token
+      });
+    } else {
+      Alert.alert('Error', 'Bad username/password. Please double check and try again');
+    }
+    if (complete) {
+      dispatch({
+        type: types.USER_COMPLETED
+      })
+    }
   } catch (e){
     console.log(e);
     Alert.alert('Error', 'Bad username/password. Please double check and try again');
@@ -76,6 +84,13 @@ export const signup = () => async (dispatch, getState) => {
   catch {
     Alert.alert('Error', "Error logging in. Please check your credentials and try again");
     return null;
+  }
+  const {token} = await response.json();
+  if (token) {
+    dispatch({
+      type: types.LOGGED_IN,
+      payload: token
+    })
   }
 
   console.log(response.json());
@@ -125,13 +140,15 @@ export const update_user = () => async (dispatch, getState) => {
     complete: true
   };
   const headers = {
-    jwt: token,
+    Authorization: `JWT ${token}`,
     Accept: 'application/json',
     'Content-Type': 'application/json'
   };
 
+  console.log(headers);
+
   const response = await fetch(url, {
-    method: 'PUT',
+    method: 'POST',
     body: JSON.stringify(data),
     headers
   });
