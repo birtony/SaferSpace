@@ -5,7 +5,7 @@ import {Grid, Row} from 'react-native-easy-grid';
 import {FontAwesome} from '@expo/vector-icons';
 import {StyleSheet, TouchableOpacity, TextInput} from 'react-native';
 import {brandColor} from "../../const/theme";
-import {signup, signup_password_changed, signup_username_chaged} from "../../actions/auth";
+import {signup, signup_password_changed, signup_username_chaged, signup_username_changed} from "../../actions/auth";
 
 class SignupPage extends Component {
   render() {
@@ -100,7 +100,7 @@ const mapStateToProps = state => ({
   password: state.auth.signup_password
 });
 const mapDispatchToProps = dispatch => ({
-  username_changed: username => dispatch(signup_username_chaged(username)),
+  username_changed: username => dispatch(signup_username_changed(username)),
   password_changed: password => dispatch(signup_password_changed(password)),
   signup: () => dispatch(signup())
 });

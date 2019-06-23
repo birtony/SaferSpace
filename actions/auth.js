@@ -80,3 +80,62 @@ export const signup = () => async (dispatch, getState) => {
 
   console.log(response.json());
 };
+
+export const name_changed = name => ({
+  type: types.NAME_CHANGED,
+  payload: name
+});
+
+export const gender_changed = gender => ({
+  type: types.GENDER_CHANGED,
+  payload: gender
+});
+
+export const location_changed = location => ({
+  type: types.LOCATION_CHANGED,
+  payload: location
+});
+
+export const date_of_birth_changed = dob => ({
+  type: types.DATE_OF_BIRTH_CHANGED,
+  payload: dob
+});
+
+export const drug_changed = (drug) => ({
+  type: types.DRUG_CHANGED,
+  payload: {drug}
+});
+
+export const last_usage_changed = last_usage => ({
+  type: types.LAST_USAGE_CHANGED,
+  payload: last_usage
+});
+
+export const update_user = () => async (dispatch, getState) => {
+  const {token, name, date_of_birth, gender, drugs, last_use, location, login_username} = getState().auth;
+
+  const url = `${HOST}/api/users/${login_username}/update`;
+  const data = {
+    firstName: name,
+    birthDate: date_of_birth,
+    gender,
+    drugs,
+    lastUse: last_use,
+    city: location,
+    complete: true
+  };
+  const headers = {
+    jwt: token,
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
+  };
+
+  const response = await fetch(url, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+    headers
+  });
+  console.log(response);
+  const responseData = await response.json();
+  console.log(responseData);
+};

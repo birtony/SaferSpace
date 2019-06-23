@@ -1,11 +1,19 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Grid, Row} from 'react-native-easy-grid';
 import {Container, Text, Button, Input, Item, ListItem, CheckBox, Body} from 'native-base';
 import DatePicker from 'react-native-datepicker';
 import {FontAwesome} from '@expo/vector-icons';
 import {brandColor} from "../../const/theme";
+import {
+  date_of_birth_changed,
+  drug_changed,
+  gender_changed,
+  last_usage_changed,
+  location_changed,
+  name_changed, update_user
+} from "../../actions/auth";
 
 class QuizPage extends Component {
 
@@ -21,12 +29,14 @@ class QuizPage extends Component {
         <View style={[styles.tab, this.state.tab === 2 ? styles.activeTab : null]} />
         <View style={[styles.tab, this.state.tab === 3 ? styles.activeTab : null]} />
         <View style={[styles.tab, this.state.tab === 4 ? styles.activeTab : null]} />
+        <View style={[styles.tab, this.state.tab === 5 ? styles.activeTab : null]} />
       </View>
     )
   }
 
   renderQuestion() {
     const questions = [
+      'What is your name?',
       'When were you born?',
       'What is your gender?',
       'Where are you located?',
@@ -42,49 +52,62 @@ class QuizPage extends Component {
   renderAnswer() {
     const answers = [
       (
+        <Item regular>
+          <Input style={styles.input} placeholder={'Your name'} value={this.props.name} onChangeText={this.props.name_changed} />
+        </Item>
+      ),
+      (
         <DatePicker
           style={styles.dateQuestion}
           mode='date'
           format='MM-DD-YYYY'
+          date={this.props.date_of_birth}
+          onDateChange={this.props.date_of_birth_changed}
         />
       ),
       (
         <View style={styles.genderQuestionContainer}>
-          <View style={styles.genderOption}>
-            <FontAwesome style={styles.genderIcon} name={'mars'} size={52} color={brandColor}/>
-            <Text style={styles.genderName}>Male</Text>
-          </View>
-          <View style={styles.genderOption}>
-            <FontAwesome style={styles.genderIcon} name={'venus'} size={52} color={brandColor}/>
-            <Text style={styles.genderName}>Female</Text>
-          </View>
-          <View style={styles.genderOption}>
-            <FontAwesome style={styles.genderIcon} name={'transgender-alt'} size={52} color={brandColor}/>
-            <Text style={styles.genderName}>Other</Text>
-          </View>
+          <TouchableOpacity onPress={() => this.props.gender_changed('male')}>
+            <View style={[styles.genderOption, this.props.gender === 'male' ? styles.active : null]}>
+              <FontAwesome style={styles.genderIcon} name={'mars'} size={52} color={brandColor}/>
+              <Text style={styles.genderName}>Male</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.props.gender_changed('female')}>
+            <View style={[styles.genderOption, this.props.gender === 'female' ? styles.active : null]}>
+              <FontAwesome style={styles.genderIcon} name={'venus'} size={52} color={brandColor}/>
+              <Text style={styles.genderName}>Female</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.props.gender_changed('other')}>
+            <View style={[styles.genderOption, this.props.gender === 'other' ? styles.active : null]}>
+              <FontAwesome style={styles.genderIcon} name={'transgender-alt'} size={52} color={brandColor}/>
+              <Text style={styles.genderName}>Other</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       ),
       (
         <Item regular>
-          <Input placeholder={'Toronto'} />
+          <Input value={this.props.location} onChangeText={this.props.location_changed} style={styles.input} placeholder={'Toronto'} />
         </Item>
       ),
       (
-        <View>
+        <View style={styles.drugContainer}>
           <ListItem>
-            <CheckBox />
+            <CheckBox checked={this.props.drugs.opioids} onPress={() => this.props.drug_changed('opioids')} />
             <Body>
               <Text>Opiods</Text>
             </Body>
           </ListItem>
           <ListItem>
-            <CheckBox />
+            <CheckBox checked={this.props.drugs.coke} onPress={() => this.props.drug_changed('coke')}/>
             <Body>
               <Text>Coke</Text>
             </Body>
           </ListItem>
           <ListItem>
-            <CheckBox />
+            <CheckBox checked={this.props.drugs.xanax} onPress={() => this.props.drug_changed('xanax')} />
             <Body>
               <Text>Xanax</Text>
             </Body>
@@ -96,6 +119,8 @@ class QuizPage extends Component {
           style={styles.dateQuestion}
           mode='date'
           format='MM-DD-YYYY'
+          date={this.props.last_use}
+          onDateChange={this.props.last_use_changed}
         />
       )
     ];
@@ -103,12 +128,16 @@ class QuizPage extends Component {
   }
 
   onNextPress() {
+    if (this.state.tab === 5) {
+      this.props.update_user();
+    }
     this.setState({
       tab: this.state.tab + 1
     })
   }
 
   render() {
+    console.log(this.props);
     return (
       <Container style={styles.container}>
         <Grid style={styles.container}>
@@ -141,6 +170,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 16
   },
+  active: {
+    borderWidth: 2,
+    borderColor: brandColor,
+    borderRadius: 5
+  },
   tabs: {
     flexDirection: 'row',
     flex: 1,
@@ -167,7 +201,7 @@ const styles = StyleSheet.create({
   },
   answerContainer: {
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   nextButtonContainer: {
     justifyContent: 'flex-end',
@@ -181,10 +215,45 @@ const styles = StyleSheet.create({
   nextButtonText: {
     color: '#fff'
   },
-  genderQuestionContainer: 52
+  genderQuestionContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  },
+  genderItem: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  genderIcon: {
+    textAlign: 'center'
+  },
+  genderName: {},
+  input: {
+    marginLeft: 32,
+    marginRight: 32
+  },
+  drugContainer: {
+    flex: 1
+  }
 
 });
 
-const mapStateToProps = (state) => ({});
-const mapDispatchToProps = (dispatch) => ({});
+const mapStateToProps = (state) => ({
+  name: state.auth.name,
+  date_of_birth: state.auth.date_of_birth,
+  gender: state.auth.gender,
+  location: state.auth.location,
+  drugs: state.auth.drugs,
+  last_use: state.auth.last_use
+});
+const mapDispatchToProps = (dispatch) => ({
+  name_changed: name => dispatch(name_changed(name)),
+  date_of_birth_changed: dob => dispatch(date_of_birth_changed(dob)),
+  gender_changed: gender => dispatch(gender_changed(gender)),
+  location_changed: location => dispatch(location_changed(location)),
+  drug_changed: (drug) => dispatch(drug_changed(drug)),
+  last_use_changed: last_use => dispatch(last_usage_changed(last_use)),
+  update_user: () => dispatch(update_user())
+});
 export default connect(mapStateToProps, mapDispatchToProps)(QuizPage);

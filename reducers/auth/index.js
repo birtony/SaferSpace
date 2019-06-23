@@ -6,7 +6,16 @@ const INITIAL_STATE = {
   signup_username: '',
   signup_password: '',
   logged_in: false,
-  token: ''
+  token: '',
+  name: '',
+  date_of_birth: '',
+  gender: '',
+  drugs: {
+    opioids: false,
+    coke: false,
+    xanax: false
+  },
+  last_use: ''
 };
 
 const reducer = (state=INITIAL_STATE, action) => {
@@ -22,6 +31,18 @@ const reducer = (state=INITIAL_STATE, action) => {
     case types.LOGGED_IN:
       console.log('LOGEDIN');
       return {...state, logged_in: true, token: action.payload};
+    case types.NAME_CHANGED:
+      return {...state, name: action.payload};
+    case types.DATE_OF_BIRTH_CHANGED:
+      return {...state, date_of_birth: action.payload};
+    case types.GENDER_CHANGED:
+      return {...state, gender: action.payload};
+    case types.LOCATION_CHANGED:
+      return {...state, location: action.payload};
+    case types.DRUG_CHANGED:
+      return {...state, drugs: {...state.drugs, [action.payload.drug]: !state.drugs[action.payload.drug]}};
+    case types.LAST_USAGE_CHANGED:
+      return {...state, last_use: action.payload};
     default:
       return state;
   }
