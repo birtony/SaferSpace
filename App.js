@@ -4,13 +4,13 @@ import {Provider} from 'react-redux';
 import store from './store';
 import navigator from './navigation';
 
-const appContainer = createAppContainer(navigator);
+const AppContainer = createAppContainer(navigator);
 
 class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        {appContainer}
+        <AppContainer/>
       </Provider>
     )
   }
