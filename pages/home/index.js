@@ -3,8 +3,10 @@ import {connect} from 'react-redux';
 import {Button, Text, Container, Form, Item, Input, Label, Content} from 'native-base';
 import {Grid, Row} from 'react-native-easy-grid';
 import {FontAwesome} from '@expo/vector-icons';
-import {StyleSheet, TouchableOpacity, TextInput} from 'react-native';
+import {StyleSheet, Image} from 'react-native';
 import {brandColor} from "../../const/theme";
+
+const pills = require('../../assets/pills.png');
 
 class HomePage extends Component {
     render() {
@@ -14,34 +16,34 @@ class HomePage extends Component {
         return (
             <Container style={styles.container}>
                 <Grid>
-                    <Row><Text>SaferSpace</Text></Row>
-                    <Row><Text>Hi {this.props.first_name}</Text></Row>
+                    <Row style={styles.header}><Text>SaferSpace</Text></Row>
+                    <Row><Text style={styles.intro}>Hi {this.props.first_name}</Text></Row>
                     <Row>
-                        <Button iconLeft>
+                        <Button style={styles.search} iconLeft>
                             <FontAwesome name='search' />
                             <Text>Nearest Safe Space</Text>
                         </Button>
                     </Row>
                     <Row><Text>Next Meeting</Text></Row>
-                    <Row><Text>{}</Text></Row>
-                    <Row>
+                    <Row><Text style={styles.meetingTime}>{}</Text></Row>
+                    <Row style={styles.centerContainer}>
                         <Text>Did you take your pills today?</Text>
-                        <Image></Image>
-                        <Button icon>
-                            <FontAwesome name='check' />
+                        <Image source={pills} style={styles.pills}/>
+                        <Button icon style={styles.blueButton}>
                             <Text>Yes</Text>
+                            <FontAwesome name='check' style={styles.blueButton}/>
                         </Button>
                     </Row>
                     <Row>
-                        <Button iconRight>
-                            <FontAwesome name='' />
+                        <Button style={styles.blueButton} iconRight>
                             <Text>Book a Session</Text>
+                            <FontAwesome name='plus' color='white' size='20'/>
                         </Button>
                     </Row>
                     <Row>
-                        <Button iconRight>
-                            <FontAwesome name='' />
+                        <Button style={styles.blueButton} iconRight>
                             <Text>Find a Therapist</Text>
+                            <FontAwesome name='search' color='white' size='20'/>
                         </Button>
                     </Row>
                 </Grid>
@@ -54,10 +56,40 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
-    activeTab: {
-        backgroundColor: brandColor
+    grid: {
+        display: 'flex',
+        flexDirection: 'column',
     },
-
+    activeTab: {
+        backgroundColor: 'white'
+    },
+    header: {
+        backgroundColor: brandColor,
+        justifyContent: 'center',
+        flex: 1
+    },
+    intro: {
+        color: brandColor,
+        justifyContent: 'center',
+        textAlign: 'center',
+    },
+    search: {
+        backgroundColor: '#F9DE32',
+    },
+    centerContainer: {
+        backgroundColor: '#E3E3E3',
+    },
+    meetingTime: {
+        color: brandColor,
+    },
+    pills: {
+        width: 200,
+        height: 200,
+    },
+    blueButton: {
+        color: 'white',
+        backgroundColor: brandColor,
+    }
 })
 
 const mapStateToProps = state => ({
