@@ -15,7 +15,7 @@ class HomePage extends Component {
             <Container style={styles.container}>
                 <Grid>
                     <Row><Text>SaferSpace</Text></Row>
-                    <Row><Text>Hi {first_name}</Text></Row>
+                    <Row><Text>Hi {this.props.first_name}</Text></Row>
                     <Row>
                         <Button iconLeft>
                             <FontAwesome name='search' />
@@ -49,6 +49,16 @@ class HomePage extends Component {
         )
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
+    activeTab: {
+        backgroundColor: brandColor
+    },
+
+})
 
 const mapStateToProps = state => ({
     first_name: state.auth.first_name
